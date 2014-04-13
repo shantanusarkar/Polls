@@ -5,6 +5,7 @@ from polls_app.models import Poll, Choice
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.utils import timezone
 
 # Create your views here.
 
@@ -13,7 +14,9 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_poll_list'
 
     def get_queryset(self):
-        return Poll.objects.order_by('-pub_date') [:5]
+        return Poll.objects.filter(
+            pub_date__lte = timezone.now()
+            ).order_by('-pub_date')[:5]
 
 def home(request):
     return render(request, 'home.html')
