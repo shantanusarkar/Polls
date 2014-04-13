@@ -4,27 +4,27 @@ from django.shortcuts import render_to_response, render
 from polls_app.models import Poll, Choice
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
+from django.views import generic
 
 # Create your views here.
 
-def index(request):
-    latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
-    context = {'latest_poll_list': latest_poll_list}
-    return render(request, 'index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'index.html'
+    context_object_name = 'latest_poll_list'
+
+    def get_queryset(self):
+        return Poll.objects.order_by('-pub_date') [:5]
 
 def home(request):
     return render(request, 'home.html')
 
-def detail(request, poll_id):
-    try:
-        poll = Poll.objects.get(pk = poll_id)
-    except Poll.DoesNotExist:
-        raise Http404
-    return render(request, 'detail.html', {'poll' : poll})
+class DetailView(generic.DetailView):
+    model = Poll
+    template_name = 'detail.html'
 
-def results(request, poll_id):
-    poll = get_object_or_404(Poll, pk = poll_id)
-    return render(request, 'results.html', {'poll' : poll})
+class ResultView(generic.DetailView):
+    model = Poll
+    template_name = 'results.html'
 
 def vote(request, poll_id):
     p = get_object_or_404(Poll, pk = poll_id)
