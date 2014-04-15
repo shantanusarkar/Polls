@@ -8,5 +8,11 @@
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
 {% endfor %}
-<input type="submit" value="Vote" />
+<input type="submit" value="Vote" /><br><br>
 </form>
+<form >
+{% csrf_token %}
+<input type="text" id = "text1"/><br>
+<input type="submit" value="Add more Choice" />
+</form>
+

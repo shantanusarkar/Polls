@@ -25,6 +25,9 @@ class DetailView(generic.DetailView):
     model = Poll
     template_name = 'detail.html'
 
+    def get_queryset(self):
+        return Poll.objects.filter(pub_date__lte=timezone.now())
+
 class ResultView(generic.DetailView):
     model = Poll
     template_name = 'results.html'
@@ -42,3 +45,7 @@ def vote(request, poll_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args = (p.id,)))
+
+def add(request, poll_id):
+    p = get_object_or_404(Poll, pk = poll_id)
+
