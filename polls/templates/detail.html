@@ -1,3 +1,6 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
 <h1>{{ poll.question }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -10,9 +13,9 @@
 {% endfor %}
 <input type="submit" value="Vote" /><br><br>
 </form>
-<form >
+<form action="{% url 'polls:add' poll.id %}" method="post">
 {% csrf_token %}
-<input type="text" id = "text1"/><br>
+<input type="text" id = "text1" name="text"/><br>
 <input type="submit" value="Add more Choice" />
 </form>
 

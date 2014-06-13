@@ -48,4 +48,6 @@ def vote(request, poll_id):
 
 def add(request, poll_id):
     p = get_object_or_404(Poll, pk = poll_id)
+    selected_choice = p.choice_set.get(pk = request.POST['choice'])
+    selected_choice.choice_set.create(choice_text = message, votes = 0)
 
